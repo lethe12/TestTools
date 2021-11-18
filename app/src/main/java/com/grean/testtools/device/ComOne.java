@@ -4,16 +4,16 @@ import com.ComReceiveProtocol;
 import com.SerialCommunication;
 import com.SerialCommunicationController;
 
-public class ComThree extends SerialCommunication implements SerialCommunicationController {
+public class ComOne extends SerialCommunication implements SerialCommunicationController {
     private ComReceiveProtocol receiveProtocol;
-    private static ComThree instance = new ComThree();
+    private static ComOne instance = new ComOne();
 
-    public static ComThree getInstance() {
-        return instance;
+    private ComOne(){
+        super(1,115200,0);
     }
 
-    private ComThree() {
-        super(3, 9600, 0);
+    public static ComOne getInstance() {
+        return instance;
     }
 
     @Override
