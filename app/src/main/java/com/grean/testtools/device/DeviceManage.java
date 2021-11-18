@@ -10,6 +10,10 @@ public class DeviceManage {
         return dataFormat;
     }
 
+    public OzoneDataFormat getOzone() {
+        return ozone;
+    }
+
     public synchronized ControlPanel getPanel() {
         if(panel==null){
             panel = new Hardware(ComThree.getInstance(),dataFormat);

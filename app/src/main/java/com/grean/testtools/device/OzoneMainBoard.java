@@ -48,7 +48,7 @@ public class OzoneMainBoard implements ComReceiveProtocol,OzoneControlPanel{
 
     @Override
     public void setDebugMode() {
-
+        com.send(tools.setModBusOneRegister((byte) 0x03, 0x4001, 0), STATUS_OTHER);
     }
 
     @Override
@@ -59,11 +59,19 @@ public class OzoneMainBoard implements ComReceiveProtocol,OzoneControlPanel{
 
     @Override
     public void setPwm(int value) {
-
+        com.send(tools.setModBusOneRegister((byte) 0x03, 0x1006, value),STATUS_OTHER);
     }
 
     @Override
     public void setRelay(int channel, boolean key) {
-
+        if((channel>0)&&(channel<6)){
+            if(key){
+                com.send(tools.setModBusOneRegister((byte) 0x03, 0x1000+channel, 0xffff), STATUS_OTHER);
+            }else{
+                com.send(tools.setModBusOneRegister((byte) 0x03, 0x1000+channel, 0x0), STATUS_OTHER);
+            }
+        }else{
+            return;
+        }
     }
 }

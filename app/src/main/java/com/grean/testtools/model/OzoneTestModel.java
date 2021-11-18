@@ -4,16 +4,22 @@ import com.grean.testtools.TestListener;
 import com.grean.testtools.device.ControlPanel;
 import com.grean.testtools.device.DeviceDataFormat;
 import com.grean.testtools.device.DeviceManage;
+import com.grean.testtools.device.OzoneControlPanel;
+import com.grean.testtools.device.OzoneDataFormat;
 
 public class OzoneTestModel {
     private TestListener listener;
     private DeviceDataFormat dataFormat;
     private ControlPanel panel;
+    private OzoneControlPanel ozoneControlPanel;
+    private OzoneDataFormat ozoneDataFormat;
 
     public OzoneTestModel(TestListener listener){
         this.listener = listener;
         dataFormat = DeviceManage.getInstance().getDataFormat();
         panel = DeviceManage.getInstance().getPanel();
+        ozoneControlPanel = DeviceManage.getInstance().getOzoneControlPanel();
+        ozoneDataFormat = DeviceManage.getInstance().getOzone();
     }
 
     public void startPowerTest(){
@@ -121,13 +127,45 @@ public class OzoneTestModel {
     }
 
     private class OzoneFunTestThread extends Thread{
+        private String content="数字输出检测\n";
+
         @Override
         public void run() {
             listener.notifyStatus("臭氧功能检测中...");
-            listener.notifyContent("all fun is ok");
-            delayS(5);
+            init();
+            getIoModel();
+            listener.notifyContent(content);
+            delayS(1);
             listener.notifyStatus("功能检测完成");
             listener.setFunEnable(true);
+        }
+
+        private void init(){
+            ozoneControlPanel.setDebugMode();
+            for(int i=1;i<=5;i++){
+                ozoneControlPanel.setRelay(i,false);
+            }
+            for(int i=0;i<4;i++){
+                panel.setAnalogOut(i,0);
+            }
+            delayS(1);
+
+        }
+
+        private void getIoModel(){
+            boolean [] din = {false,false,false,false,false};
+            ozoneControlPanel.inquire();
+            panel.inquireStatus();
+            delayS(1);
+            for(int i=0;i<5;i++){
+                if(dataFormat.getDin()[i]){
+                    din[i] = true;
+                    content += "数字输出"+i+"通道异常";
+                }
+            }
+
+
+
         }
     }
 
