@@ -4,9 +4,13 @@ public class DeviceDataFormat {
     private float[] ain = new float[8];
     private boolean[] din =new boolean[32];
 
-    public void setAin (int index,float a){
+    private float calcVoltage(int a){
+        return (float) (a-32768)/3276.8f;
+    }
+
+    public void setAin (int index,int a){
         if((index<ain.length)&&(index >= 0)){
-            ain[index] = a;
+            ain[index] = calcVoltage(a);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.grean.testtools.device;
 
+import android.util.Log;
+
 import com.ComReceiveProtocol;
 import com.SerialCommunicationController;
 import com.tools;
@@ -15,6 +17,7 @@ public class Hardware implements ComReceiveProtocol ,ControlPanel{
 
     @Override
     public void receiveProtocol(byte[] rec, int size, int state) {
+        Log.d("Hardware",tools.bytesToHexString(rec,size));
         if(tools.checkFrameWithAddr(rec,size,ADDRESS_IO)){
             for(int i=0;i<8;i++){
                 byte reg = (byte) (0x01<<i);
@@ -68,8 +71,9 @@ public class Hardware implements ComReceiveProtocol ,ControlPanel{
 
     @Override
     public void inquireStatus() {
+        Log.d("hardware","inquireStatus");
         com.send(tools.getModBus4xRegisters(ADDRESS_IO,631,2),STATUS_INQUIRE_RELAY_IN);
-        com.send(tools.getModBus3xRegisters(ADDRESS_ANALOG_IN,0x0001,16),STATUS_INQUIRE_ANALOG_IN);
+        com.send(tools.getModBus3xRegisters(ADDRESS_ANALOG_IN,0x0000,8),STATUS_INQUIRE_ANALOG_IN);
     }
 
     @Override

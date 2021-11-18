@@ -13,7 +13,7 @@ public class ComThree extends SerialCommunication implements SerialCommunication
     }
 
     private ComThree() {
-        super(3, 9600, 0);
+        super(4, 9600, 0);
     }
 
     @Override

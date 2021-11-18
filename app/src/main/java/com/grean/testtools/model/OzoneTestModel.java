@@ -51,17 +51,9 @@ public class OzoneTestModel {
         }
 
         private void getVoltageStatus(){
-            for(int i=0;i<8;i++){
+            for(int i=1;i<8;i++){
                 float f = dataFormat.getAin()[i];
                 switch (i){
-                    case 0:
-                        content+= "+15V电压:"+f*2;
-                        if((f>7)&&(f<8)){
-                           content+= "正常\n";
-                        }else{
-                            content+= "异常\n";
-                        }
-                        break;
                     case 1:
                         content+= "D+3.3V电压:"+f;
                         if((f>3)&&(f<4)){
@@ -102,7 +94,7 @@ public class OzoneTestModel {
                             content+= "异常\n";
                         }
                         break;
-                    case 7:
+                    case 6:
                         content+= "光电板B +5V电压:"+f;
                         if((f>4.5)&&(f<5.5)){
                             content+= "正常\n";
@@ -110,7 +102,7 @@ public class OzoneTestModel {
                             content+= "异常\n";
                         }
                         break;
-                    case 8:
+                    case 7:
                         content+= "光电板B REF+5V电压:"+f;
                         if((f>4.8)&&(f<5.2)){
                             content+= "正常\n";
@@ -163,9 +155,6 @@ public class OzoneTestModel {
                     content += "数字输出"+i+"通道异常";
                 }
             }
-
-
-
         }
     }
 
