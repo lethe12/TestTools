@@ -78,7 +78,9 @@ public class Hardware implements ComReceiveProtocol ,ControlPanel{
 
     @Override
     public void setAnalogOut(int channel, float value) {
-        com.send(tools.setModBusOneRegister(ADDRESS_ANALOG_OUT,0x0001,4095),STATUS_SET_ANALOG_OUT);
+        if((channel>=0)&&(channel<4)) {
+            com.send(tools.setModBusOneRegister(ADDRESS_ANALOG_OUT, channel, DeviceDataFormat.voltageToInt(value)), STATUS_SET_ANALOG_OUT);
+        }
     }
 
     @Override

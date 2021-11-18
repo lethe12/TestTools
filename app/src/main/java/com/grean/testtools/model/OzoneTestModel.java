@@ -56,7 +56,7 @@ public class OzoneTestModel {
                 switch (i){
                     case 1:
                         content+= "D+3.3V电压:"+f;
-                        if((f>3)&&(f<4)){
+                        if((f>3)&&(f<3.6)){
                             content+= "正常\n";
                         }else{
                             content+= "异常\n";
@@ -154,7 +154,14 @@ public class OzoneTestModel {
                     din[i] = true;
                     content += "数字输出"+i+"通道异常";
                 }
+                panel.setRelayOut(i,true);
             }
+            delayS(1);
+            for (int i=0;i<5;i++){
+
+            }
+
+
         }
     }
 

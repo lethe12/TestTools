@@ -14,6 +14,14 @@ public class DeviceDataFormat {
         }
     }
 
+    public static int voltageToInt(float a){
+        if((a>=-10)&&(a<=10)){
+            return (int)(a*3276.8f)+32768;
+        }else{
+            return 32768;
+        }
+    }
+
     public void setDin(int index,boolean d){
         if((index<din.length)&&(index >= 0)){
             din[index] = d;
