@@ -2,9 +2,9 @@ package com.grean.testtools.device;
 
 public class DeviceDataFormat {
     private float[] ain = new float[8];
-    private boolean[] din =new boolean[32];
+    private boolean[] din =new boolean[16];
 
-    private float calcVoltage(int a){
+    public static float calcVoltage(int a){
         return (float) (a-32768)/3276.8f;
     }
 
@@ -16,9 +16,9 @@ public class DeviceDataFormat {
 
     public static int voltageToInt(float a){
         if((a>=-10)&&(a<=10)){
-            return (int)(a*3276.8f)+32768;
+            return (int)(a*204.8f)+2048;
         }else{
-            return 32768;
+            return 2048;
         }
     }
 

@@ -8,6 +8,7 @@ import com.tools;
 
 public class Hardware implements ComReceiveProtocol ,ControlPanel{
     private DeviceDataFormat format;
+    private int dout = 0;
     protected SerialCommunicationController com;
     public Hardware(SerialCommunicationController communicationController,DeviceDataFormat format){
         this.format = format;
@@ -22,33 +23,15 @@ public class Hardware implements ComReceiveProtocol ,ControlPanel{
             for(int i=0;i<8;i++){
                 byte reg = (byte) (0x01<<i);
                 if((rec[3]&reg)!=0x00){
-                    format.setDin(i,false);
+                    format.setDin(8+i,false);
                 }else{
-                    format.setDin(i,true);
+                    format.setDin(8+i,true);
                 }
             }
 
             for(int i=8;i<16;i++){
                 byte reg = (byte) (0x01<<(i-8));
                 if((rec[4]&reg)!=0x00){
-                    format.setDin(i,false);
-                }else{
-                    format.setDin(i,true);
-                }
-            }
-
-            for(int i=16;i<24;i++){
-                byte reg = (byte) (0x01<<(i-16));
-                if((rec[5]&reg)!=0x00){
-                    format.setDin(i,false);
-                }else{
-                    format.setDin(i,true);
-                }
-            }
-
-            for(int i=24;i<32;i++){
-                byte reg = (byte) (0x01<<(i-24));
-                if((rec[6]&reg)!=0x00){
                     format.setDin(i,false);
                 }else{
                     format.setDin(i,true);
@@ -72,7 +55,7 @@ public class Hardware implements ComReceiveProtocol ,ControlPanel{
     @Override
     public void inquireStatus() {
         Log.d("hardware","inquireStatus");
-        com.send(tools.getModBus4xRegisters(ADDRESS_IO,631,2),STATUS_INQUIRE_RELAY_IN);
+        com.send(tools.getModBus4xRegisters(ADDRESS_IO,630,1),STATUS_INQUIRE_RELAY_IN);
         com.send(tools.getModBus3xRegisters(ADDRESS_ANALOG_IN,0x0000,8),STATUS_INQUIRE_ANALOG_IN);
     }
 
@@ -85,6 +68,24 @@ public class Hardware implements ComReceiveProtocol ,ControlPanel{
 
     @Override
     public void setRelayOut(int channel, boolean key) {
-        com.send(tools.setModBusOneRegister(ADDRESS_IO,561,4095),STATUS_SET_ANALOG_OUT);
+        if((channel>=0)&&(channel<16)) {
+            if(key){
+                dout |= (0x0001<<channel);
+            }else{
+                dout &= (0xFFFE<<channel);
+            }
+            com.send(tools.setModBusOneRegister(ADDRESS_IO, 0x0230, dout), STATUS_SET_RELAY_OUT);
+        }
+    }
+
+    @Override
+    public void setAllRelay(boolean key) {
+        if(key){
+            dout = 0xffff;
+            com.send(tools.setModBusOneRegister(ADDRESS_IO, 0x0230, 0xffff), STATUS_SET_RELAY_OUT);
+        }else{
+            dout = 0;
+            com.send(tools.setModBusOneRegister(ADDRESS_IO, 0x0230, 0), STATUS_SET_RELAY_OUT);
+        }
     }
 }

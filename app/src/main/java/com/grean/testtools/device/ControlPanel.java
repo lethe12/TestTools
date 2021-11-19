@@ -9,4 +9,5 @@ public interface ControlPanel {
     void inquireStatus();
     void setAnalogOut(int channel,float value);
     void setRelayOut(int channel,boolean key);
+    void setAllRelay(boolean key);
 }
