@@ -1,5 +1,7 @@
 package com.grean.testtools.device;
 
+import android.util.Log;
+
 import com.ComReceiveProtocol;
 import com.SerialCommunicationController;
 import com.tools;
@@ -28,6 +30,7 @@ public class OzoneMainBoard implements ComReceiveProtocol,OzoneControlPanel{
     @Override
     public void receiveProtocol(byte[] rec, int size, int state) {
         if(tools.checkFrameWithAddr(rec,size, (byte) 0x03)) {
+            Log.d("OzoneMainBoard",tools.bytesToHexString(rec,size));
             switch (state){
                 case STATUS_INQUIRE:
                     getRealTimeData(rec);
@@ -48,11 +51,20 @@ public class OzoneMainBoard implements ComReceiveProtocol,OzoneControlPanel{
 
     @Override
     public void setDebugMode() {
+        Log.d("OzoneMainBoard","setDebugMode");
         com.send(tools.setModBusOneRegister((byte) 0x03, 0x4001, 0), STATUS_OTHER);
     }
 
     @Override
+    public void setInitMode() {
+        Log.d("OzoneMainBoard","setInitMode");
+        com.send(tools.setModBusOneRegister((byte) 0x03, 0x4002, 2), STATUS_OTHER);
+
+    }
+
+    @Override
     public void inquire() {
+        Log.d("OzoneMainBoard","inquire");
         com.send(tools.getModBusRegisters((byte) 0x03,0x2001,14),STATUS_INQUIRE);
 
     }

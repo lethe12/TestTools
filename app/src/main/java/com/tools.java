@@ -663,6 +663,19 @@ import android.util.Log;
 		return cmd;
 	}
 
+	public static byte[] getModBus2xRegisters(byte address,int reg,int num){
+		byte[]  cmd = {0x01,0x02,0x10,0x01,0x00,0x01,0x0d,0x0a};
+		cmd[0] = address;
+		byte[] regs = int2byte(reg);
+		cmd[2] = regs[0];
+		cmd[3] = regs[1];
+		regs = int2byte(num);
+		cmd[4] = regs[0];
+		cmd[5] = regs[1];
+		addCrc16(cmd,0,6);
+		return cmd;
+	}
+
 	public static byte[] getModBus3xRegisters(byte address,int reg,int num){
 		byte[]  cmd = {0x01,0x03,0x10,0x01,0x00,0x01,0x0d,0x0a};
 		cmd[0] = address;
@@ -721,7 +734,7 @@ import android.util.Log;
 			return false;
 		}
 
-		if(!((buff[1]==0x03)||(buff[1]==0x04)||(buff[1]==0x06))){
+		if(!((buff[1]==0x03)||(buff[1]==0x04)||(buff[1]==0x06)||(buff[1]==0x02))){
 			return false;
 		}
 

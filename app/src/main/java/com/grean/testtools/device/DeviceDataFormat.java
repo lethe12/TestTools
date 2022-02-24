@@ -5,7 +5,11 @@ public class DeviceDataFormat {
     private boolean[] din =new boolean[16];
 
     public static float calcVoltage(int a){
-        return (float) (a-32768)/3276.8f;
+        return (float) a/6553.6f;
+    }
+
+    public static float calcMainBoardVoltage(int a){
+        return (float) a/13107f;
     }
 
     public void setAin (int index,int a){

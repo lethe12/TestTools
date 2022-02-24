@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements TestListener, Vie
         tvContent = findViewById(R.id.tvTestContent);
         tvStatus = findViewById(R.id.tvTestStatus);
 
+        findViewById(R.id.btnTest).setOnClickListener(this);
+
         model = new OzoneTestModel(this);
 
     }
@@ -94,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements TestListener, Vie
                 break;
             case R.id.btnOzonePowerTest:
                 model.startPowerTest();
+                break;
+            case R.id.btnTest:
+                model.startDebugTest();
                 break;
             default:
 

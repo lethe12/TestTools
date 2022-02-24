@@ -1,8 +1,11 @@
 package com.grean.testtools.device;
 
+import android.util.Log;
+
 import com.ComReceiveProtocol;
 import com.SerialCommunication;
 import com.SerialCommunicationController;
+import com.tools;
 
 public class ComOne extends SerialCommunication implements SerialCommunicationController {
     private ComReceiveProtocol receiveProtocol;
@@ -23,6 +26,7 @@ public class ComOne extends SerialCommunication implements SerialCommunicationCo
 
     @Override
     protected void communicationProtocol(byte[] rec, int size, int state) {
+       // Log.d("ComOne", "sync"+tools.bytesToHexString(rec,size));
         if(receiveProtocol!=null){
             receiveProtocol.receiveProtocol(rec,size,state);
         }
@@ -30,6 +34,7 @@ public class ComOne extends SerialCommunication implements SerialCommunicationCo
 
     @Override
     protected void asyncCommunicationProtocol(byte[] rec, int size) {
+        //Log.d("ComOne", "async"+tools.bytesToHexString(rec,size));
         if(receiveProtocol!=null){
             receiveProtocol.receiveAsyncProtocol(rec,size);
         }

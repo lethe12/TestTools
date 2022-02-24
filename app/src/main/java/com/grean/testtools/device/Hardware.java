@@ -20,21 +20,25 @@ public class Hardware implements ComReceiveProtocol ,ControlPanel{
     public void receiveProtocol(byte[] rec, int size, int state) {
         Log.d("Hardware",tools.bytesToHexString(rec,size));
         if(tools.checkFrameWithAddr(rec,size,ADDRESS_IO)){
-            for(int i=0;i<8;i++){
-                byte reg = (byte) (0x01<<i);
-                if((rec[3]&reg)!=0x00){
-                    format.setDin(8+i,false);
-                }else{
-                    format.setDin(8+i,true);
-                }
-            }
+            if(rec[2]==0x02) {
+                for (int i = 0; i < 8; i++) {
+                    byte reg = (byte) (0x01 << i);
+                    if ((rec[3] & reg) != 0x00) {
+                        //Log.d("Hardware", "" + i + "=true");
+                        format.setDin(i, true);
+                    } else {
 
-            for(int i=8;i<16;i++){
-                byte reg = (byte) (0x01<<(i-8));
-                if((rec[4]&reg)!=0x00){
-                    format.setDin(i,false);
-                }else{
-                    format.setDin(i,true);
+                        format.setDin(i, false);
+                    }
+                }
+
+                for (int i = 8; i < 16; i++) {
+                    byte reg = (byte) (0x01 << (i - 8));
+                    if ((rec[4] & reg) != 0x00) {
+                        format.setDin(i, true);
+                    } else {
+                        format.setDin(i, false);
+                    }
                 }
             }
 
@@ -55,7 +59,8 @@ public class Hardware implements ComReceiveProtocol ,ControlPanel{
     @Override
     public void inquireStatus() {
         Log.d("hardware","inquireStatus");
-        com.send(tools.getModBus4xRegisters(ADDRESS_IO,630,1),STATUS_INQUIRE_RELAY_IN);
+        //com.send(tools.getModBus4xRegisters(ADDRESS_IO,630,1),STATUS_INQUIRE_RELAY_IN);
+        com.send(tools.getModBus2xRegisters(ADDRESS_IO,0,16),STATUS_INQUIRE_RELAY_IN);
         com.send(tools.getModBus3xRegisters(ADDRESS_ANALOG_IN,0x0000,8),STATUS_INQUIRE_ANALOG_IN);
     }
 
