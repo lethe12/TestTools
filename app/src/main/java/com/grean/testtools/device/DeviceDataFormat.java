@@ -4,7 +4,11 @@ public class DeviceDataFormat {
     private float[] ain = new float[8];
     private boolean[] din =new boolean[16];
 
-    public static float calcVoltage(int a){
+    public static float calcVoltage(int a){//4017+ 电压计算
+        return (float) (a-32768)/3276.8f;
+    }
+
+    public static float calcPhotoVoltage(int a){
         return (float) a/6553.6f;
     }
 

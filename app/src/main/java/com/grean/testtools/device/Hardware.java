@@ -27,7 +27,7 @@ public class Hardware implements ComReceiveProtocol ,ControlPanel{
                         //Log.d("Hardware", "" + i + "=true");
                         format.setDin(i, true);
                     } else {
-
+                        //Log.d("Hardware", "" + i + "=false");
                         format.setDin(i, false);
                     }
                 }
